@@ -30,3 +30,9 @@ tasks.withType(Test) {
     }
 }
 
+task regres_tests(type: Test) {
+    useJUnitPlatform{
+        includeTags "regres"
+    }
+}
+

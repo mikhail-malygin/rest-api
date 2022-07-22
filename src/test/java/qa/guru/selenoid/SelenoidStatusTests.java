@@ -1,4 +1,4 @@
-package qa.guru;
+package qa.guru.selenoid;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SelenoidStatusTests {
 
     @Test
-    void checkTotal() {
+    void checkTotalTests() {
         get("https://selenoid.autotests.cloud/status")
                 .then()
                 .statusCode(200)
@@ -20,7 +20,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void checkTotalWithGiven() {
+    void checkTotalWithGivenTests() {
         given()
                 .when()
                 .get("https://selenoid.autotests.cloud/status")
@@ -30,7 +30,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void checkTotalWithLogs() {
+    void checkTotalWithLogsTests() {
         given()
                 .log().all()
                 .when()
@@ -42,7 +42,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void checkChromeVersion() {
+    void checkChromeVersionTests() {
         given()
                 .log().all()
                 .when()
@@ -54,7 +54,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void checkTotalWithSomeLogs() {
+    void checkTotalWithSomeLogsTests() {
         given()
                 .log().uri()
                 .when()
@@ -67,7 +67,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void checkResponseBadPractice() {
+    void checkResponseBadPracticeTests() {
         String expectedResponseString = "{\"total\":20,\"used\":0,\"queued\":0,\"pending\":0,\"browsers\":" +
                 "{\"android\":{\"8.1\":{}},\"chrome\":{\"100.0\":{},\"99.0\":{}}," +
                 "\"chrome-mobile\":{\"86.0\":{}},\"firefox\":{\"97.0\":{},\"98.0\":{}}," +
@@ -88,7 +88,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void checkTotalGoodPractice() {
+    void checkTotalGoodPracticeTests() {
         Integer expectedTotal = 20;
         Integer actualTotal = given()
                 .log().uri()
@@ -106,7 +106,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void check401WdHubStatus() {
+    void check401WdHubStatusTests() {
         given()
                 .log().uri()
                 .log().body()
@@ -119,7 +119,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void checkWdHubStatusWithAuthInUrl() {
+    void checkWdHubStatusWithAuthInUrlTests() {
         given()
                 .log().uri()
                 .when()
@@ -132,7 +132,7 @@ public class SelenoidStatusTests {
     }
 
     @Test
-    void checkWdHubStatus() {
+    void checkWdHubStatusTests() {
         given()
                 .auth().basic("user1", "1234")
                 .log().all()
