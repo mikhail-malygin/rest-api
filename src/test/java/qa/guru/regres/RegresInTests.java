@@ -1,5 +1,6 @@
 package qa.guru.regres;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,7 @@ import static org.hamcrest.Matchers.*;
 public class RegresInTests extends TestBase{
 
     @Test
+    @DisplayName("Login user test")
     void loginTests() {
         String body = "{ \"email\": \"eve.holt@reqres.in\", " +
                 "\"password\": \"cityslicka\" }"; // todo bad practice
@@ -29,6 +31,7 @@ public class RegresInTests extends TestBase{
     }
 
     @Test
+    @DisplayName("Login user test without password")
     void unsuccessfulLoginWithoutPasswordTests() {
         String body = "{ \"email\": \"eve.holt@reqres.in\"}"; // todo bad practice
 
@@ -47,6 +50,7 @@ public class RegresInTests extends TestBase{
     }
 
     @Test
+    @DisplayName("Getting user list test")
     @Tag("regres")
     void getListUsersTests() {
         given()
@@ -56,10 +60,13 @@ public class RegresInTests extends TestBase{
                 .then()
                 .log().status()
                 .log().body()
-                .statusCode(200);
+                .statusCode(200)
+                .body("data.id", hasItems(2))
+                .body("data.email", hasItems("janet.weaver@reqres.in"));
     }
 
     @Test
+    @DisplayName("Getting single user list test")
     @Tag("regres")
     void getSingleUserTests() {
         given()
@@ -76,6 +83,7 @@ public class RegresInTests extends TestBase{
     }
 
     @Test
+    @DisplayName("Creation a new user test")
     @Tag("regres")
     void createUserTests() {
         String body = "{ \"name\": \"Guilo\", " +
@@ -97,6 +105,7 @@ public class RegresInTests extends TestBase{
     }
 
     @Test
+    @DisplayName("Update of user data test")
     @Tag("regres")
     void updateUserTests() {
         String body = "{ \"name\": \"Guilo\", " +
@@ -118,6 +127,7 @@ public class RegresInTests extends TestBase{
     }
 
     @Test
+    @DisplayName("Deletion user test")
     @Tag("regres")
     void deleteUserTests() {
         given()
@@ -131,6 +141,7 @@ public class RegresInTests extends TestBase{
     }
 
     @Test
+    @DisplayName("Registration of a known user test")
     @Tag("regres")
     void registerKnownUserTests() {
         String body = "{ \"email\": \"tracey.ramos@reqres.in\", " +
@@ -142,7 +153,7 @@ public class RegresInTests extends TestBase{
                 .contentType(JSON)
                 .body(body)
                 .when()
-                .post("https://reqres.in/api/register")
+                .post("register")
                 .then()
                 .log().status()
                 .log().body()
@@ -152,6 +163,7 @@ public class RegresInTests extends TestBase{
     }
 
     @Test
+    @DisplayName("Registration of an unknown user test")
     @Tag("regres")
     void registerUnknownUserTests() {
         String body = "{ \"email\": \"testGulio@reqres.in\", " +
@@ -163,7 +175,7 @@ public class RegresInTests extends TestBase{
                 .contentType(JSON)
                 .body(body)
                 .when()
-                .post("https://reqres.in/api/register")
+                .post("register")
                 .then()
                 .log().status()
                 .log().body()
@@ -172,12 +184,13 @@ public class RegresInTests extends TestBase{
     }
 
     @Test
+    @DisplayName("Getting a delayed user list test")
     @Tag("regres")
     void getDelayedListUsersTests() {
         given()
                 .log().uri()
                 .when()
-                .get("https://reqres.in/api/users?delay=3")
+                .get("users?delay=3")
                 .then()
                 .log().status()
                 .log().body()
