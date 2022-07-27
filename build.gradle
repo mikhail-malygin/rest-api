@@ -11,7 +11,8 @@ def allureVersion = "2.18.1",
     selenideVersion = "6.6.6",
     restAssuredVersion = "5.1.1",
     junitVersion = "5.8.2",
-    slf4jVersion = "1.7.32"
+    slf4jVersion = "1.7.32",
+    ownerVersion = "1.0.12"
 
 allure {
     report {
@@ -34,7 +35,8 @@ dependencies {
             "io.rest-assured:rest-assured:$restAssuredVersion",
             "com.codeborne:selenide:$selenideVersion",
             "io.qameta.allure:allure-selenide:$allureVersion",
-            "io.qameta.allure:allure-rest-assured:$allureVersion"
+            "io.qameta.allure:allure-rest-assured:$allureVersion",
+            "org.aeonbits.owner:owner:$ownerVersion"
     )
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.8.1')
 }
@@ -44,6 +46,7 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.withType(Test) {
+    systemProperties(System.getProperties())
     useJUnitPlatform()
 
     testLogging {
@@ -57,6 +60,12 @@ tasks.withType(Test) {
 task regres_tests(type: Test) {
     useJUnitPlatform{
         includeTags "regres"
+    }
+}
+
+task demoWebShop_smoke_tests(type: Test) {
+    useJUnitPlatform{
+        includeTags "demoWebShop"
     }
 }
 

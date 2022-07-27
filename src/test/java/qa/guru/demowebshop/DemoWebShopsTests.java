@@ -1,13 +1,8 @@
 package qa.guru.demowebshop;
 
-import com.codeborne.selenide.Configuration;
-
 import com.codeborne.selenide.WebDriverRunner;
-import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Step;
-import io.qameta.allure.selenide.AllureSelenide;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
 
@@ -19,19 +14,7 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
-public class DemoWebShopsTests {
-
-    String authCookieName = "NOPCOMMERCE.AUTH",
-           email = "vbdv@feferf.ru",
-           password = "itLf7@U@Bf6khGH";
-
-    @BeforeAll
-    static void setUp() {
-        Configuration.baseUrl = "http://demowebshop.tricentis.com";
-        RestAssured.baseURI = "http://demowebshop.tricentis.com";
-
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
-    }
+public class DemoWebShopsTests extends TestBase{
 
     @Test
     void addNewToCartAsAnonymTest() {
@@ -170,6 +153,7 @@ public class DemoWebShopsTests {
     }
 
     @Test
+    @Tag("demoWebShop")
     void addToCartWithAllureTest() {
 
         String authCookieValue = getAuthCookie(email, password);
