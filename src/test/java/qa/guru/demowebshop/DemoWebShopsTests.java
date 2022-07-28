@@ -179,6 +179,28 @@ public class DemoWebShopsTests extends TestBase{
                 $(".cart-qty").shouldHave(text(cartSize)));
     }
 
+    @Test
+    @Tag("demoWebShop")
+    void addEditProfileTest() {
+
+        String authCookieValue = getAuthCookie(email, password);
+
+        changeNameProfile(authCookieValue);
+
+        step("Open minimal content, because cookie can be set when site is opened", () ->
+                open("content/images/thumbs/0000172_build-your-own-cheap-computer_47.jpeg"));
+
+        step("Set cookie to to browser", () -> {
+            Cookie authCookie = new Cookie(authCookieName, authCookieValue);
+            WebDriverRunner.getWebDriver().manage().addCookie(authCookie);
+        });
+
+        step("Open profile page", () ->
+                open("/customer/info"));
+        step("Check first name", () ->
+                $("#FirstName").shouldHave(text("test")));
+    }
+
     @Step("Get authorization cookie")
     String getAuthCookie(String email, String password) {
         return given()
@@ -196,9 +218,9 @@ public class DemoWebShopsTests extends TestBase{
                 .cookie(authCookieName);
     }
 
-    @Step("Get cart size")
-    String getCartSize(String body, String authCookieValue) {
-        return given()
+        @Step("Get cart size")
+        String getCartSize(String body, String authCookieValue) {
+                return given()
                 .filter(withCustomTemplates())
                 .contentType("application/x-www-form-urlencoded; charset=UTF-8")
                 .cookie(authCookieName, authCookieValue)
@@ -212,5 +234,28 @@ public class DemoWebShopsTests extends TestBase{
                 .body("message",is("The product has been added to your <a href=\"/cart\">shopping cart</a>"))
                 .extract()
                 .path("updatetopcartsectionhtml");
+    }
+
+    @Step("Change first name in profile")
+    void changeNameProfile(String authCookieValue) {
+
+        String body = "_RequestVerificationToken=1xX-k8D2L45RgGpOJ_Zh6TzO3L5XEUAVh_wSjfyaCIIy0-cIY4-DYLQ9fIUgRIKbKIILXdmd494kZbQ8ZN2q9m5FxtkgbVXaWenLF7HzwsmCfNdj10JEZ1dcw8zIa3800" +
+                "&Gender=M" +
+                "&FirstName=test" +
+                "&LastName=sdfsdf" +
+                "&Email=vbdv@feferf.ru" +
+                "&save-info-button=Save";
+
+        given()
+                .filter(withCustomTemplates())
+                .contentType("application/x-www-form-urlencoded; charset=UTF-8")
+                .cookie(authCookieName, authCookieValue)
+                .body(body)
+                .when()
+                .post("/customer/info")
+                .then()
+                .log().body()
+                .log().cookies()
+                .statusCode(302);
     }
 }
