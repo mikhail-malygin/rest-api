@@ -153,7 +153,6 @@ public class DemoWebShopsTests extends TestBase{
     }
 
     @Test
-    @Tag("demoWebShop")
     void addToCartWithAllureTest() {
 
         String authCookieValue = getAuthCookie(email, password);
@@ -188,7 +187,7 @@ public class DemoWebShopsTests extends TestBase{
         changeNameProfile(authCookieValue);
 
         step("Open minimal content, because cookie can be set when site is opened", () ->
-                open("content/images/thumbs/0000172_build-your-own-cheap-computer_47.jpeg"));
+                open("/Themes/DefaultClean/Content/images/logo.png"));
 
         step("Set cookie to to browser", () -> {
             Cookie authCookie = new Cookie(authCookieName, authCookieValue);
@@ -218,9 +217,9 @@ public class DemoWebShopsTests extends TestBase{
                 .cookie(authCookieName);
     }
 
-        @Step("Get cart size")
-        String getCartSize(String body, String authCookieValue) {
-                return given()
+    @Step("Get cart size")
+    String getCartSize(String body, String authCookieValue) {
+        return given()
                 .filter(withCustomTemplates())
                 .contentType("application/x-www-form-urlencoded; charset=UTF-8")
                 .cookie(authCookieName, authCookieValue)
