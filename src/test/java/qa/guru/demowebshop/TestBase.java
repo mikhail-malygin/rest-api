@@ -10,10 +10,13 @@ import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import pages.Account;
 
 import static java.lang.String.format;
 
 public class TestBase {
+
+    Account account = new Account();
 
     String authCookieName = "NOPCOMMERCE.AUTH",
             email = "vbdv@feferf.ru",
@@ -23,6 +26,7 @@ public class TestBase {
 
     @BeforeAll
     static void setUp() {
+
         String login = config.login();
         String password = config.password();
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());

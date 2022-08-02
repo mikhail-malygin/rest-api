@@ -13,6 +13,7 @@ import static helpers.CustomApiListener.withCustomTemplates;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static qa.guru.demowebshop.TestData.FIRST_NAME;
 
 public class DemoWebShopsTests extends TestBase{
 
@@ -184,8 +185,6 @@ public class DemoWebShopsTests extends TestBase{
 
         String authCookieValue = getAuthCookie(email, password);
 
-        changeNameProfile(authCookieValue);
-
         step("Open minimal content, because cookie can be set when site is opened", () ->
                 open("/Themes/DefaultClean/Content/images/logo.png"));
 
@@ -195,9 +194,15 @@ public class DemoWebShopsTests extends TestBase{
         });
 
         step("Open profile page", () ->
-                open("/customer/info"));
-        step("Check first name", () ->
-                $("#FirstName").shouldHave(text("test")));
+                account.openpage());
+
+        step("Change user first name", () -> {
+                account.changeUserFirstName(FIRST_NAME)
+                       .saveChanges();
+        });
+
+        step("Check user first name", () ->
+                account.checkFirstName(FIRST_NAME));
     }
 
     @Step("Get authorization cookie")
@@ -233,28 +238,5 @@ public class DemoWebShopsTests extends TestBase{
                 .body("message",is("The product has been added to your <a href=\"/cart\">shopping cart</a>"))
                 .extract()
                 .path("updatetopcartsectionhtml");
-    }
-
-    @Step("Change first name in profile")
-    void changeNameProfile(String authCookieValue) {
-
-        String body = "_RequestVerificationToken=1xX-k8D2L45RgGpOJ_Zh6TzO3L5XEUAVh_wSjfyaCIIy0-cIY4-DYLQ9fIUgRIKbKIILXdmd494kZbQ8ZN2q9m5FxtkgbVXaWenLF7HzwsmCfNdj10JEZ1dcw8zIa3800" +
-                "&Gender=M" +
-                "&FirstName=test" +
-                "&LastName=sdfsdf" +
-                "&Email=vbdv@feferf.ru" +
-                "&save-info-button=Save";
-
-        given()
-                .filter(withCustomTemplates())
-                .contentType("application/x-www-form-urlencoded; charset=UTF-8")
-                .cookie(authCookieName, authCookieValue)
-                .body(body)
-                .when()
-                .post("/customer/info")
-                .then()
-                .log().body()
-                .log().cookies()
-                .statusCode(302);
     }
 }
