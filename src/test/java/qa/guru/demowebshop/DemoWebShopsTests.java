@@ -2,6 +2,7 @@ package qa.guru.demowebshop;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
@@ -181,7 +182,8 @@ public class DemoWebShopsTests extends TestBase{
 
     @Test
     @Tag("demoWebShop")
-    void addEditProfileTest() {
+    @DisplayName("Change user first name in profile")
+    void changeUserFirstNameInProfileTest() {
 
         String authCookieValue = getAuthCookie(email, password);
 

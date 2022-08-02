@@ -3,7 +3,7 @@ package qa.guru.demowebshop;
 
 import com.github.javafaker.Faker;
 
-public class TestData extends DemoWebShopsTests{
+public class TestData{
 
     public final static Faker faker = new Faker();
 
