@@ -13,6 +13,8 @@ import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static specs.LoginSpecs.loginRequestSpec;
+import static specs.LoginSpecs.LoginResponseSpec;
 
 public class RegresInExtendedTests extends TestBase{
 
@@ -82,9 +84,31 @@ public class RegresInExtendedTests extends TestBase{
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .extract().as(LoginResponseLombokModel.class);
+                .extract()
+                .as(LoginResponseLombokModel.class);
 
         assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
-
     }
+
+    @Test
+    @DisplayName("Login user test")
+    void loginWithSpecsTests() {
+
+        LoginBodyLombokModel loginBodyLombokModel = new LoginBodyLombokModel();
+        loginBodyLombokModel.setEmail("eve.holt@reqres.in");
+        loginBodyLombokModel.setPassword("cityslicka");
+
+        LoginResponseLombokModel response = given()
+                .spec(loginRequestSpec)
+                .body(loginBodyLombokModel)
+                .when()
+                .post()
+                .then()
+                .spec(LoginResponseSpec)
+                .extract()
+                .as(LoginResponseLombokModel.class);
+
+        assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
+    }
+
 }
