@@ -2,35 +2,30 @@ package specs;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
-import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
 import static helpers.CustomApiListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.notNullValue;
 
-public class LoginSpecs {
-    public static RequestSpecification loginRequestSpec = with()
-            .basePath("/login")
+public class RegisterSpec {
+
+    public static RequestSpecification registerUserRequestSpec = with()
+            .basePath("register")
             .filter(withCustomTemplates())
             .log().uri()
-            .log().body()
-            .contentType(JSON)
-            .contentType(ContentType.JSON);
+            .contentType(JSON);
 
-    public static ResponseSpecification LoginResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification registerKnownUserResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(LogDetail.STATUS)
             .log(LogDetail.BODY)
-            .expectBody("token", notNullValue())
             .build();
 
-    public static ResponseSpecification LoginResponseWithoutPasswordSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification registerUnknownUserResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(400)
             .log(LogDetail.STATUS)
             .log(LogDetail.BODY)
-            .expectBody("error", notNullValue())
             .build();
 }

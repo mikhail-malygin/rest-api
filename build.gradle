@@ -74,3 +74,10 @@ task demoWebShop_tests(type: Test) {
     }
 }
 
+task regres_extended_tests(type: Test) {
+    useJUnitPlatform {
+        includeTags "regres_models"
+    }
+}
+
+
